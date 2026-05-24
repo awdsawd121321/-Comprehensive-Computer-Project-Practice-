@@ -1,0 +1,31 @@
+{
+  "FRCorr": 0.5486590363354088,
+  "FRCorr*": 0.5486590363354088,
+  "FRdist": 95.941367081002,
+  "FRDiv": 0.0005550795477798239,
+  "FRDiv(%)": 0.055507954777982385,
+  "FRDvs": 0.15621892709841495,
+  "FRDvs(%)": 15.621892709841495,
+  "FRVar": 0.04584788158535957,
+  "FRVar(%)": 4.584788158535957,
+  "FRSyn": 32.38766114180479,
+  "score_breakdown": {
+    "S1_FRCorr": 10,
+    "S2_FRdist": 9.492,
+    "S3_FRDiv": 0.163,
+    "S4_FRDvs": 10,
+    "S5_FRVar": 10,
+    "S6_FRRea": 10.839,
+    "S7_FRSyn": 10,
+    "S8_FRCorr*": 25,
+    "S_total": 85.495
+  },
+  "_meta": {
+    "prediction_path": "face_driving\\evaluation_results\\prediction_emotion.npy",
+    "generated": true,
+    "k": 10,
+    "sigma": 0.3,
+    "target_frames": 750,
+    "checkpoint": "face_driving/checkpoints_emotion/best.pt"
+  }
+}

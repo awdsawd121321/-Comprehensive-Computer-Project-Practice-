@@ -1,0 +1,26 @@
+# Face Driving Model - Dependencies
+# ===================================
+
+# Core ML
+torch>=2.0.0
+torchaudio>=2.0.0
+numpy>=1.24.0
+
+# Audio feature extraction
+transformers>=4.30.0   # HuBERT / Wav2Vec2
+librosa>=0.10.0
+
+# Video / Face processing
+mediapipe>=0.10.0
+opencv-python>=4.8.0
+
+# Training utilities
+tensorboard>=2.13.0
+tqdm>=4.65.0
+pyyaml>=6.0
+
+# Evaluation
+scipy>=1.10.0
+
+# Inference server
+websockets>=11.0

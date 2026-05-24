@@ -1,0 +1,79 @@
+# Emotion Driving Model V2 — 抗过拟合配置
+# 优化重点: FRCorr/FRCorr* (35分), FRVar, FRSyn
+
+model:
+  audio_encoder: "TencentGameMate/chinese-hubert-base"
+  audio_feat_dim: 768
+  freeze_audio_encoder: true          # 渐进式解冻在训练中控制
+  d_model: 256
+  n_heads: 4
+  n_layers: 4
+  dropout: 0.1
+  output_fps: 25
+  noise_sigma: 0.05                   # 降低噪声（从 0.1）
+
+data:
+  data_root: "train"
+  target_audio_sr: 16000
+  segment_sec: 30.0
+  target_frames: 750
+
+training:
+  batch_size: 4
+  learning_rate: 0.0003              # 降低（从 5e-4），更稳定
+  weight_decay: 0.01                  # 100× 增加（从 0.0001），关键正则化
+  lr_scheduler: "cosine_warmup"
+  warmup_steps: 500
+  lr_eta_min: 1e-6
+  max_epochs: 80                      # 增加到 80（从 50）
+  early_stopping_patience: 20         # 增加耐心（从 15）
+  gradient_clip: 1.0
+  val_split: 0.1
+  accumulation_steps: 4              # 等效 batch_size=16
+
+  # === 混合精度 ===
+  use_amp: true                       # 节省 40% VRAM
+
+  # === EMA ===
+  use_ema: true
+  ema_decay: 0.999
+
+  # === 数据增强 ===
+  use_augmentation: true
+
+  # === 渐进式解冻 HuBERT ===
+  progressive_unfreeze: true
+
+  # === 损失权重（重平衡，CCC 权重大幅提高）===
+  loss_weights:
+    # 重建损失
+    au: 1.0
+    va: 2.0
+    exp: 0.5
+    # 动态一致性
+    velocity: 0.5
+    acceleration: 0.2
+    # 多样性
+    diversity: 0.1
+    # 时间方差匹配
+    temporal_var: 1.0
+    # L1 辅助损失
+    l1: 0.5
+    # CCC（直接优化 FRCorr — 最高权重）
+    ccc_au: 5.0                       # 从 2.0 → 5.0
+    ccc_va: 8.0                       # 从 3.0 → 8.0
+    ccc_exp: 3.0                      # 从 1.0 → 3.0
+    # 时间同步
+    sync: 2.0                         # 从 1.5 → 2.0
+
+  # === Label Smoothing ===
+  exp_label_smoothing: 0.1
+
+checkpoint:
+  save_dir: "face_driving/checkpoints_emotion"
+  save_every_epoch: 5
+  keep_top_k: 5
+
+logging:
+  tensorboard_dir: "face_driving/runs_emotion"
+  log_every_steps: 50

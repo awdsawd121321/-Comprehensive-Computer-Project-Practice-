@@ -1,0 +1,57 @@
+# 训练配置 — 适配比赛数据集 (NoXI + RECOLA)
+
+model:
+  audio_encoder: "TencentGameMate/chinese-hubert-base"
+  audio_feat_dim: 768
+  freeze_audio_encoder: true
+
+  d_model: 256
+  n_heads: 4
+  n_layers: 4
+  dropout: 0.1
+
+  # 输出维度 (比赛 3D_FV = 58 维: 52 AU + 6 head pose)
+  n_face_params: 58
+  n_face_au: 52
+  n_head_pose: 6
+
+  # 情绪条件维度 (valence + arousal + 8 离散情绪概率)
+  emotion_cond_dim: 10
+
+  # 帧率 (比赛数据 25fps)
+  output_fps: 25
+
+data:
+  data_root: "train"                # 比赛数据根目录
+  target_audio_sr: 16000            # HuBERT 需要 16kHz
+  segment_sec: 5.0                  # 训练段长度
+
+training:
+  batch_size: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  lr_scheduler: "cosine"
+  warmup_steps: 500
+  max_epochs: 100
+  early_stopping_patience: 10
+  gradient_clip: 1.0
+  val_split: 0.1                    # 自动划分验证集比例
+
+  loss_weights:
+    au_rec: 1.0                     # AU 重建 MSE
+    pose_rec: 0.5                   # 头部姿态重建 MSE
+    velocity: 0.5                   # 一阶差分一致性 → FRSyn
+    acceleration: 0.1               # 二阶差分
+    diversity: 0.05                 # 多样性正则 → FRDiv
+
+  augmentation:
+    noise_sigma: 0.002
+
+checkpoint:
+  save_dir: "face_driving/checkpoints"
+  save_every_epoch: 5
+  keep_top_k: 3
+
+logging:
+  tensorboard_dir: "face_driving/runs"
+  log_every_steps: 50

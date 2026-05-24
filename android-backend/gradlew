@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+set -e
+
+# Minimal Gradle wrapper bootstrapper.
+# If you use Android Studio, you don't need this file.
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+WRAPPER_JAR="$DIR/gradle/wrapper/gradle-wrapper.jar"
+
+if [ ! -f "$WRAPPER_JAR" ]; then
+  echo "Missing $WRAPPER_JAR"
+  echo "Open this project in Android Studio to generate wrapper files, or run:"
+  echo "  ./gradlew wrapper"
+  exit 1
+fi
+
+JAVA_CMD="${JAVA_HOME:+$JAVA_HOME/bin/}java"
+exec "$JAVA_CMD" -jar "$WRAPPER_JAR" "$@"
+

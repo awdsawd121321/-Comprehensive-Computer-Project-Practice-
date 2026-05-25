@@ -1,0 +1,21 @@
+{
+  "plugins": {
+    "entries": {
+      "emobit-elder-care": {
+        "enabled": true,
+        "config": {
+          "bridgeBaseUrl": "http://127.0.0.1:4318",
+          "bridgeToken": "replace-with-bridge-token",
+          "defaultElderId": "elder_demo",
+          "androidNodeId": "android-elder-01"
+        }
+      },
+      "voice-call": {
+        "enabled": true,
+        "config": {
+          "provider": "mock"
+        }
+      }
+    }
+  }
+}

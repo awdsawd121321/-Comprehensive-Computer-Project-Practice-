@@ -1,0 +1,47 @@
+{
+  "id": "emobit-elder-care",
+  "kind": "automation",
+  "skills": [
+    "./skills/elder-care-orchestrator"
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "bridgeBaseUrl": {
+        "type": "string",
+        "description": "YiCompanion OpenClaw bridge base URL."
+      },
+      "bridgeToken": {
+        "type": "string",
+        "description": "Optional bridge auth token."
+      },
+      "defaultElderId": {
+        "type": "string",
+        "description": "Default elder identifier."
+      },
+      "androidNodeId": {
+        "type": "string",
+        "description": "Preferred Android node ID for location checks."
+      }
+    }
+  },
+  "uiHints": {
+    "bridgeBaseUrl": {
+      "label": "Bridge URL",
+      "placeholder": "http://127.0.0.1:4318"
+    },
+    "bridgeToken": {
+      "label": "Bridge Token",
+      "sensitive": true
+    },
+    "defaultElderId": {
+      "label": "Default Elder ID",
+      "placeholder": "elder_demo"
+    },
+    "androidNodeId": {
+      "label": "Android Node ID",
+      "placeholder": "android-elder-01"
+    }
+  }
+}
